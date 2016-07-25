@@ -1,0 +1,116 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define MAX 200
+
+int aux = 0;
+
+void d_a_c(char bmp[],int mat[][MAX], int bl, int bc, int el, int ec, int exl, int exc)
+{
+    int ml = (bl + el) /2;
+    int mc = (bc + ec) /2;
+    int zero = 0, um = 0;
+    int il = 0, ic = 0;
+
+
+    if((bl + el) % 2 == 1)  ml ++;
+
+    if((bc + ec) % 2 == 1)  mc ++;
+
+    for(int i = bl; i < el + exl; i++)
+    //conta 0's e 1s na matriz
+    {
+        for(int j = bc; j < ec + exc; j++)
+        {
+            if(mat[i][j] == 0)      ++zero;
+
+            else        ++um;
+        }
+    }
+
+    //quadrante "inexistente"
+    if(zero == 0 && um == 0)
+    {
+        return ;
+    }
+    //se tiver apenas 1's retorna 1
+    else if(zero == 0)
+    {
+        bmp[aux++] = '1';
+        return ;
+    }
+    //se tiver apenas 0's retorna 0
+    else if(um == 0)
+    {
+        bmp[aux++] = '0';
+        return ;
+    }
+    // se tiver 0's e 1s, retorna para cada quadrante
+    else
+    {
+        bmp[aux++] = 'D';
+        d_a_c(bmp, mat, bl, bc, ml, mc, 0 , 0); //1º quadrante
+
+        if(il) d_a_c(bmp, mat, bl+1, mc, ml, ec, 0, 0); //2ºquadrante
+        else    d_a_c(bmp, mat, bl, mc, ml, ec, 0, 0); //2ºquadrante
+
+
+        if(ic)  d_a_c(bmp, mat, ml, bc+1, el, mc, 0, 0); //3º quadrante
+        else    d_a_c(bmp, mat, ml, bc, el, mc, 0, 0); //3º quadrante
+
+
+        if(ic && il)    d_a_c(bmp, mat, ml+1, mc+1, el, ec, 0, 0); //4º quadrante
+        else if(il)     d_a_c(bmp, mat, ml+1, mc, el, ec, 0, 0); //4º quadrante
+        else if(ic)     d_a_c(bmp, mat, ml, mc+1, el, ec, 0, 0); //4º quadrante
+        else      d_a_c(bmp, mat, ml, mc, el, ec, 0, 0); //4º quadrante
+
+        return ;
+    }
+
+}
+
+int main()
+{
+    int mat[MAX][MAX];
+    char bmp[MAX*MAX], str[MAX];
+    int n, l, c;
+
+    scanf("%d", &n);
+
+    while(n>0)
+    {
+        scanf("%d", &l);
+        scanf("%d", &c);
+
+        for(int i = 0; i< l; i++)
+        {
+            scanf("%s", &str);
+
+            for(int j=0; j < c; j++)
+            {
+                mat[i][j] = str[j] - 48;
+            }
+        }
+
+        d_a_c(bmp, mat, 0, 0, l, c, 0, 0);
+
+        bmp[aux]= '\0';
+
+        //printf("%s\n", bmp);
+
+
+        for(int i = 0; i < aux ; i++)
+        {
+            if(i > 0 && i%50 == 0)     printf("\n");
+            printf("%c", bmp[i]);
+        }
+        printf("\n");
+
+        aux = 0;
+
+        n--;
+    }
+
+    return 0;
+
+}
