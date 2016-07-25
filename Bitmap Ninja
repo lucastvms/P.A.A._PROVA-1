@@ -5,6 +5,7 @@ using namespace std;
 
 int aux = 0;
 
+//divide and conquer , pega os atributos, begin linha, begin coluna, end linha, end coluna, extra linha, extra coluna 
 void d_a_c(char bmp[],int mat[][MAX], int bl, int bc, int el, int ec, int exl, int exc)
 {
     int ml = (bl + el) /2;
@@ -12,7 +13,7 @@ void d_a_c(char bmp[],int mat[][MAX], int bl, int bc, int el, int ec, int exl, i
     int zero = 0, um = 0;
     int il = 0, ic = 0;
 
-
+    // se a linha ou coluna for ímpar
     if((bl + el) % 2 == 1)  ml ++;
 
     if((bc + ec) % 2 == 1)  mc ++;
